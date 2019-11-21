@@ -1,0 +1,29 @@
+block-command-path:
+  - org.spigotmc
+  - org.bukkit
+  - com.sk89q
+  - com.destroystokyo
+  - co.aikar
+
+block-command-name:
+  - /
+  - /desel
+  - /deselect
+  - /sel
+  - /toggleplace
+  - ;
+  - list
+  - me
+  - msg
+  - none
+  - region
+  - regions
+  - rg
+  - teammsg
+  - tell
+  - tm
+  - toggleplace
+  - trigger
+  - w
+  - we
+  - worldedit

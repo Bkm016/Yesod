@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ink.ptms.yesod.Yesod.iml" filepath="$PROJECT_DIR$/.idea/modules/ink.ptms.yesod.Yesod.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ink.ptms.yesod.Yesod.main.iml" filepath="$PROJECT_DIR$/.idea/modules/ink.ptms.yesod.Yesod.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ink.ptms.yesod.Yesod.test.iml" filepath="$PROJECT_DIR$/.idea/modules/ink.ptms.yesod.Yesod.test.iml" />
+    </modules>
+  </component>
+</project>

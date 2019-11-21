@@ -1,0 +1,5 @@
+name: Yesod
+main: ink.ptms.yesod.Yesod
+api-version: 1.13
+
+version: ${version}

@@ -2,13 +2,12 @@ package ink.ptms.yesod.module
 
 import ink.ptms.yesod.Yesod
 import io.izzel.taboolib.module.inject.TListener
+import io.izzel.taboolib.util.lite.Effects
 import io.izzel.taboolib.util.lite.Materials
 import org.bukkit.GameMode
 import org.bukkit.Material
-import org.bukkit.entity.ArmorStand
-import org.bukkit.entity.FishHook
-import org.bukkit.entity.Hanging
-import org.bukkit.entity.Player
+import org.bukkit.Particle
+import org.bukkit.entity.*
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.*
@@ -16,6 +15,7 @@ import org.bukkit.event.entity.*
 import org.bukkit.event.hanging.HangingBreakByEntityEvent
 import org.bukkit.event.hanging.HangingBreakEvent
 import org.bukkit.event.player.*
+import org.bukkit.event.raid.RaidTriggerEvent
 
 /**
  * @Author sky
@@ -66,6 +66,11 @@ class ProtectWorld : Listener {
     fun e(e: ProjectileHitEvent) {
         if (e.entity is FishHook && (e.hitEntity is ArmorStand || e.hitEntity?.hasMetadata("NPC") == true)) {
             e.entity.remove()
+            Effects.create(Particle.SMOKE_NORMAL, e.entity.location).speed(0.1).count(8).range(50.0).play()
+        }
+        if (e.entity is Arrow && (e.entity as Arrow).pickupStatus != AbstractArrow.PickupStatus.ALLOWED) {
+            e.entity.remove()
+            Effects.create(Particle.SMOKE_NORMAL, e.entity.location).speed(0.1).count(8).range(50.0).play()
         }
     }
 
@@ -101,5 +106,10 @@ class ProtectWorld : Listener {
     @EventHandler
     fun e(e: PlayerJoinEvent) {
         e.player.isSleepingIgnored = true
+    }
+
+    @EventHandler
+    fun e(e: RaidTriggerEvent) {
+        e.isCancelled = true
     }
 }

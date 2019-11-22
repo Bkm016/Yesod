@@ -1,6 +1,7 @@
 package ink.ptms.yesod.module
 
 import io.izzel.taboolib.module.inject.TListener
+import io.izzel.taboolib.util.item.Items
 import net.minecraft.server.v1_14_R1.BlockTileEntity
 import net.minecraft.server.v1_14_R1.IInventory
 import net.minecraft.server.v1_14_R1.World
@@ -22,9 +23,14 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockPlaceEvent
+import org.bukkit.event.entity.ItemMergeEvent
+import org.bukkit.event.entity.ItemSpawnEvent
+import org.bukkit.event.player.PlayerItemConsumeEvent
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.BlockStateMeta
+import org.bukkit.inventory.meta.PotionMeta
+import org.bukkit.potion.PotionEffectType
 
 /**
  * @Author sky
@@ -44,6 +50,27 @@ class ModuleItem : Listener {
                 t.printStackTrace()
             }
         }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    fun onConsume(e: PlayerItemConsumeEvent) {
+        if (e.item.itemMeta is PotionMeta) {
+            (e.item.itemMeta as PotionMeta).customEffects
+                    .filter { it.type == PotionEffectType.SATURATION }
+                    .forEach { e.player.addPotionEffect(it, true) }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    fun e(e: ItemSpawnEvent) {
+        e.entity.customName = Items.getName(e.entity.itemStack) + "§f * " + e.entity.itemStack.amount
+        e.entity.isCustomNameVisible = true
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    fun e(e: ItemMergeEvent) {
+        e.target.customName = Items.getName(e.target.itemStack) + "§f * " + e.target.itemStack.amount
+        e.target.isCustomNameVisible = true
     }
 
     fun isContainer(item: ItemStack): Boolean {

@@ -38,7 +38,7 @@ public class ProtectPacket implements Listener {
             if (packet.is("PacketPlayOutTabComplete") && !player.isOp()) {
                 return packet.read("b", Suggestions.class).getList().stream().anyMatch(suggestion -> Bukkit.getPlayerExact(suggestion.getText()) != null);
             }
-            if (packet.is("PacketPlayOutChat") && packet.read("a").toString().contains("chat.type.advancement")) {
+            if (packet.is("PacketPlayOutChat") && String.valueOf(packet.read("a")).contains("chat.type.advancement")) {
                 return false;
             }
             if (packet.is("PacketPlayOutWorldParticles") && Asm.HANDLE.readParticlePacket(packet.read("j")).equals("minecraft:damage_indicator")) {

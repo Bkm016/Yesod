@@ -1,10 +1,12 @@
 package ink.ptms.yesod.module
 
+import ink.ptms.yesod.Yesod
 import io.izzel.taboolib.module.inject.TListener
 import io.izzel.taboolib.util.item.Items
 import net.minecraft.server.v1_14_R1.BlockTileEntity
 import net.minecraft.server.v1_14_R1.IInventory
 import net.minecraft.server.v1_14_R1.World
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.block.Chest
 import org.bukkit.block.Container
@@ -63,14 +65,24 @@ class ModuleItem : Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun e(e: ItemSpawnEvent) {
-        e.entity.customName = Items.getName(e.entity.itemStack) + "§f * " + e.entity.itemStack.amount
-        e.entity.isCustomNameVisible = true
+        Bukkit.getScheduler().runTaskLater(Yesod.getPlugin(), Runnable {
+            if (e.entity.hasMetadata("hide_tag")) {
+                return@Runnable
+            }
+            e.entity.customName = Items.getName(e.entity.itemStack) + "§f * " + e.entity.itemStack.amount
+            e.entity.isCustomNameVisible = true
+        }, 1);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun e(e: ItemMergeEvent) {
-        e.target.customName = Items.getName(e.target.itemStack) + "§f * " + e.target.itemStack.amount
-        e.target.isCustomNameVisible = true
+        Bukkit.getScheduler().runTaskLater(Yesod.getPlugin(), Runnable {
+            if (e.entity.hasMetadata("hide_tag")) {
+                return@Runnable
+            }
+            e.target.customName = Items.getName(e.target.itemStack) + "§f * " + e.target.itemStack.amount
+            e.target.isCustomNameVisible = true
+        }, 1);
     }
 
     fun isContainer(item: ItemStack): Boolean {

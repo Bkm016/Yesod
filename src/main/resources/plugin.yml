@@ -1,5 +1,6 @@
 name: Yesod
 main: ink.ptms.yesod.Yesod
 api-version: 1.13
+author: 坏黑
 
 version: ${version}

@@ -50,7 +50,7 @@ public class ProtectPacket implements Listener {
         @Override
         public boolean onReceive(Player player, Packet packet) {
             if (packet.is("PacketPlayInAutoRecipe") || packet.is("PacketPlayInRecipeDisplayed")) {
-                if (map.computeIfAbsent(player.getName(), a -> new AtomicInteger(0)).getAndIncrement() > 10) {
+                if (map.computeIfAbsent(player.getName(), a -> new AtomicInteger(0)).getAndIncrement() > 20) {
                     Bukkit.getScheduler().runTask(Yesod.getPlugin(), () -> player.kickPlayer("[Yesod] Invalid client action."));
                 }
             }

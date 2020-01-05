@@ -25,13 +25,15 @@ import org.bukkit.event.raid.RaidTriggerEvent
 class ProtectWorld : Listener {
 
     @EventHandler
-    fun e(e: EntityChangeBlockEvent) {
+    fun e(e: EntityBreedEvent) {
         e.isCancelled = true
     }
 
     @EventHandler
-    fun e(e: EntityBreedEvent) {
-        e.isCancelled = true
+    fun e(e: EntityChangeBlockEvent) {
+        if (e.entity is LivingEntity) {
+            e.isCancelled = true
+        }
     }
 
     @EventHandler

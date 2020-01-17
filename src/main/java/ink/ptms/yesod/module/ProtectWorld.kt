@@ -106,11 +106,6 @@ class ProtectWorld : Listener {
     }
 
     @EventHandler
-    fun e(e: PlayerJoinEvent) {
-        e.player.isSleepingIgnored = true
-    }
-
-    @EventHandler
     fun e(e: RaidTriggerEvent) {
         e.isCancelled = true
     }

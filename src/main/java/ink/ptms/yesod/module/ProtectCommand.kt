@@ -51,10 +51,10 @@ class ProtectCommand : Listener {
         if (e.player.isOp) {
             return
         }
-        val v = e.message.split(" ")[0].toLowerCase()
-        if (v.contains(":") || Yesod.CONF.getStringList("block-command-name").any { command -> v.startsWith("/$command") }) {
+        val v = e.message.split(" ")[0].toLowerCase().substring(1)
+        if (v.contains(":") || v in Yesod.CONF.getStringList("block-command-name")) {
             e.isCancelled = true
-            e.player.sendMessage("§cI'm sorry, but you do not have permission to perform this command. Please contact the server administrators if you believe that this is in error.")
+            e.player.sendMessage(SpigotConfig.unknownCommandMessage)
         }
     }
 

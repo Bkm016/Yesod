@@ -2,6 +2,7 @@ package ink.ptms.yesod.module
 
 import com.google.common.collect.Maps
 import ink.ptms.yesod.Yesod
+import io.izzel.taboolib.TabooLib
 import io.izzel.taboolib.TabooLibAPI
 import io.izzel.taboolib.module.command.TCommandHandler
 import io.izzel.taboolib.module.inject.TListener
@@ -41,6 +42,7 @@ class ProtectCommand : Listener {
     fun e(e: PlayerCommandSendEvent) {
         if (!e.player.isOp) {
             e.commands.removeAll(Yesod.CONF.getStringList("block-command-name"))
+            e.commands.removeAll(Yesod.CONF.getStringList("block-command-send"))
         }
     }
 
@@ -59,8 +61,10 @@ class ProtectCommand : Listener {
     @TSchedule
     fun e() {
         TCommandHandler.getCommandMap().commands.forEach { command ->
-            if (Yesod.CONF.getStringList("block-command-path").any { name -> command.javaClass.name.startsWith(name) && command.name !in Yesod.CONF.getStringList("block-command-path-whitelist") }) {
-                command.permission = "*"
+            if (Yesod.CONF.getStringList("block-command-path").any { name -> command.javaClass.name.startsWith(name) }) {
+                if (command !is PluginCommand || !TabooLibAPI.isDependTabooLib(command.plugin)) {
+                    command.permission = "*"
+                }
             }
         }
     }

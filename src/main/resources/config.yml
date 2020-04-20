@@ -5,6 +5,15 @@ block-command-path:
   - com.destroystokyo
   - co.aikar
 
+block-command-path-whitelist:
+  - plugins
+  - plugin
+  - pl
+  - about
+  - ?
+  - help
+  - version
+
 block-command-name:
   - /
   - /desel

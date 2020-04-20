@@ -50,7 +50,7 @@ class ProtectCommand : Listener {
             return
         }
         val v = e.message.split(" ")[0].toLowerCase()
-        if (v.contains(":") || Yesod.CONF.getStringList("block-command-name").any{ command -> v.startsWith("/$command")}) {
+        if (v.contains(":") || Yesod.CONF.getStringList("block-command-name").any { command -> v.startsWith("/$command") }) {
             e.isCancelled = true
             e.player.sendMessage("§cI'm sorry, but you do not have permission to perform this command. Please contact the server administrators if you believe that this is in error.")
         }
@@ -59,7 +59,7 @@ class ProtectCommand : Listener {
     @TSchedule
     fun e() {
         TCommandHandler.getCommandMap().commands.forEach { command ->
-            if (Yesod.CONF.getStringList("block-command-path").any { name -> command.javaClass.name.startsWith(name) }) {
+            if (Yesod.CONF.getStringList("block-command-path").any { name -> command.javaClass.name.startsWith(name) && command.name !in Yesod.CONF.getStringList("block-command-path-whitelist") }) {
                 command.permission = "*"
             }
         }

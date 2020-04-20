@@ -40,7 +40,7 @@ class ProtectCommand : Listener {
     @EventHandler
     fun e(e: PlayerCommandSendEvent) {
         if (!e.player.isOp) {
-            e.commands.clear()
+            e.commands.removeAll(Yesod.CONF.getStringList("block-command-name"))
         }
     }
 
@@ -56,14 +56,11 @@ class ProtectCommand : Listener {
         }
     }
 
-    companion object {
-
-        @TSchedule
-        fun e() {
-            TCommandHandler.getCommandMap().commands.forEach { command ->
-                if (Yesod.CONF.getStringList("block-command-path").any { name -> command.javaClass.name.startsWith(name) }) {
-                    command.permission = "*"
-                }
+    @TSchedule
+    fun e() {
+        TCommandHandler.getCommandMap().commands.forEach { command ->
+            if (Yesod.CONF.getStringList("block-command-path").any { name -> command.javaClass.name.startsWith(name) }) {
+                command.permission = "*"
             }
         }
     }

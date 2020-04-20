@@ -6,7 +6,7 @@ plugins {
 
 configurations {
     group = 'ink.ptms.yesod'
-    version = '1.0-SNAPSHOT'
+    version = '1.0'
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
@@ -28,17 +28,17 @@ repositories {
 
 dependencies {
     compile 'org.spigotmc:spigot:1.14.4-R0.1-20191211.040645-13'
-    compile 'io.izzel.taboolib:TabooLib:5.11:all'
-    compile 'io.izzel.taboolib.loader:TabooLibloader:1.2:all'
+    compile 'io.izzel.taboolib:TabooLib:5.26:all'
+    compile 'io.izzel.taboolib:TabooLibLoader:2.0:all'
     compile "org.jetbrains.kotlin:kotlin-stdlib:1.2.41"
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.41"
 }
 
 shadowJar {
     dependencies {
-        include dependency('io.izzel.taboolib.loader:.*')
+        include dependency('io.izzel.taboolib:TabooLibLoader:.*')
     }
-    relocate 'io.izzel.taboolib.loader', project.group
+    relocate 'io.izzel.taboolib.loader', project.group + ".boot"
 }
 
 processResources {

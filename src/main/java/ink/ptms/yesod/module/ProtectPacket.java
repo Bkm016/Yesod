@@ -1,15 +1,14 @@
 package ink.ptms.yesod.module;
 
 import com.google.common.collect.Maps;
+import com.mojang.brigadier.suggestion.Suggestion;
 import com.mojang.brigadier.suggestion.Suggestions;
-import ink.ptms.yesod.Yesod;
 import ink.ptms.yesod.asm.Asm;
 import io.izzel.taboolib.module.inject.TInject;
 import io.izzel.taboolib.module.inject.TListener;
 import io.izzel.taboolib.module.inject.TSchedule;
 import io.izzel.taboolib.module.packet.Packet;
 import io.izzel.taboolib.module.packet.TPacketListener;
-import net.minecraft.server.v1_14_R1.PacketPlayOutWorldParticles;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -50,9 +49,7 @@ public class ProtectPacket implements Listener {
         @Override
         public boolean onReceive(Player player, Packet packet) {
             if (packet.is("PacketPlayInAutoRecipe") || packet.is("PacketPlayInRecipeDisplayed")) {
-                if (map.computeIfAbsent(player.getName(), a -> new AtomicInteger(0)).getAndIncrement() > 20) {
-                    Bukkit.getScheduler().runTask(Yesod.getPlugin(), () -> player.kickPlayer("[Yesod] Invalid client action."));
-                }
+                return false;
             }
             return true;
         }

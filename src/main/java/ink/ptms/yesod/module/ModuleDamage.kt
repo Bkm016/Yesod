@@ -47,7 +47,7 @@ class ModuleDamage : Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun e(e: EntityDamageByEntityEvent) {
         if (e.cause == EntityDamageEvent.DamageCause.ENTITY_ATTACK || e.cause == EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK) {
-            Servers.getAttackerInDamageEvent(e)?.let { it.playSound(it.location, Sound.ENTITY_PLAYER_ATTACK_CRIT, 1f, 1f) }
+            Servers.getAttackerInDamageEvent(e)?.let { it.playSound(it.location, Sound.ENTITY_PLAYER_ATTACK_CRIT, 0.2f, Numbers.getRandomDouble(0.8, 1.2).toFloat()) }
         }
         if (e.cause == EntityDamageEvent.DamageCause.THORNS && e.damager is LivingEntity) {
             e.damage = 1.0

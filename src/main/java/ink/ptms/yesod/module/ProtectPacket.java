@@ -40,9 +40,6 @@ public class ProtectPacket implements Listener {
             if (packet.is("PacketPlayOutChat") && String.valueOf(packet.read("a")).contains("chat.type.advancement")) {
                 return false;
             }
-            if (packet.is("PacketPlayOutAdvancements")) {
-                return false;
-            }
             if (packet.is("PacketPlayOutWorldParticles") && Asm.HANDLE.readParticlePacket(packet.read("j")).equals("minecraft:damage_indicator")) {
 //                return packet.read("g", Float.TYPE) == 0.2f && packet.read("h", Integer.TYPE) == 5f;
                 return false;

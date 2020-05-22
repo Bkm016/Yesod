@@ -4,8 +4,21 @@ block-command-path:
   - com.sk89q
   - com.destroystokyo
   - co.aikar
+  - com.onarandombox
+  
+block-command-send:
+  - cronusquestbook
+  - cronusquestlogs
+  - cronusquestopen
+  - cronusquestquit
+  - cronusquestvisible
 
 block-command-name:
+  - br
+  - brush
+  - tool
+  - /br
+  - /brush
   - /
   - /desel
   - /deselect

@@ -2,6 +2,7 @@
   <library name="Gradle: io.izzel.taboolib:TabooLib:all:5.26">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/../../development/Gradle/repo/caches/modules-2/files-2.1/io.izzel.taboolib/TabooLib/5.26/d1f4da5e78032c696513e7be791c06e19e3ad392/TabooLib-5.26-all.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../development/Gradle/repo/caches/modules-2/files-2.1/io.izzel.taboolib/TabooLib/5.26/d1f4da5e78032c696513e7be791c06e19e3ad392/TabooLib-5.26-all.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

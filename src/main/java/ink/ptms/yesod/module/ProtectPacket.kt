@@ -15,7 +15,7 @@ object ProtectPacket {
 
     @TPacket(type = TPacket.Type.SEND)
     fun send(player: Player, packet: Packet): Boolean {
-        if (packet.`is`("PacketPlayOutChat") && packet.read("a").toString().contains("chat.type.advancement")) {
+        if (packet.`is`("PacketPlayOutChat") && packet.read("a")?.toString()?.contains("chat.type.advancement") == true) {
             return false
         }
         if (packet.`is`("PacketPlayOutTabComplete") && !player.isOp) {

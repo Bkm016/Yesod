@@ -1,34 +1,12 @@
 package ink.ptms.yesod.module
 
-import ink.ptms.yesod.Yesod
 import io.izzel.taboolib.module.inject.TListener
-import io.izzel.taboolib.util.item.Items
-import net.minecraft.server.v1_14_R1.BlockTileEntity
-import net.minecraft.server.v1_14_R1.IInventory
-import net.minecraft.server.v1_14_R1.World
-import org.bukkit.Bukkit
-import org.bukkit.Material
-import org.bukkit.block.Chest
 import org.bukkit.block.Container
-import org.bukkit.block.Hopper
-import org.bukkit.craftbukkit.v1_14_R1.CraftWorld
-import org.bukkit.craftbukkit.v1_14_R1.block.CraftHopper
-import org.bukkit.craftbukkit.v1_14_R1.block.impl.CraftChest
-import org.bukkit.craftbukkit.v1_14_R1.entity.CraftHumanEntity
-import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer
-import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftContainer
-import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftInventory
-import org.bukkit.entity.EntityType
-import org.bukkit.entity.Phantom
-import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockPlaceEvent
-import org.bukkit.event.entity.ItemMergeEvent
-import org.bukkit.event.entity.ItemSpawnEvent
 import org.bukkit.event.player.PlayerItemConsumeEvent
-import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.BlockStateMeta
 import org.bukkit.inventory.meta.PotionMeta
@@ -61,28 +39,6 @@ class ModuleItem : Listener {
                     .filter { it.type == PotionEffectType.SATURATION }
                     .forEach { e.player.addPotionEffect(it, true) }
         }
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    fun e(e: ItemSpawnEvent) {
-        Bukkit.getScheduler().runTaskLater(Yesod.getPlugin(), Runnable {
-            if (e.entity.hasMetadata("hide_tag")) {
-                return@Runnable
-            }
-            e.entity.customName = Items.getName(e.entity.itemStack) + "§f * " + e.entity.itemStack.amount
-            e.entity.isCustomNameVisible = true
-        }, 1);
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    fun e(e: ItemMergeEvent) {
-        Bukkit.getScheduler().runTaskLater(Yesod.getPlugin(), Runnable {
-            if (e.entity.hasMetadata("hide_tag")) {
-                return@Runnable
-            }
-            e.target.customName = Items.getName(e.target.itemStack) + "§f * " + e.target.itemStack.amount
-            e.target.isCustomNameVisible = true
-        }, 1);
     }
 
     fun isContainer(item: ItemStack): Boolean {

@@ -1,21 +1,11 @@
 package ink.ptms.yesod.module
 
-import ink.ptms.yesod.Yesod
 import io.izzel.taboolib.module.inject.TListener
-import io.izzel.taboolib.module.lite.SimpleEquip
-import io.izzel.taboolib.util.item.Items
-import io.izzel.taboolib.util.lite.Effects
 import io.izzel.taboolib.util.lite.Numbers
 import io.izzel.taboolib.util.lite.Servers
-import net.minecraft.server.v1_14_R1.EntityHuman
-import org.bukkit.Bukkit
-import org.bukkit.Particle
 import org.bukkit.Sound
-import org.bukkit.craftbukkit.v1_14_R1.CraftSound
 import org.bukkit.enchantments.Enchantment
-import org.bukkit.entity.EntityType
 import org.bukkit.entity.LivingEntity
-import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
@@ -30,19 +20,6 @@ import java.util.*
  */
 @TListener
 class ModuleDamage : Listener {
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    fun e(e: EntityDamageEvent) {
-        if (e.cause == EntityDamageEvent.DamageCause.ENTITY_ATTACK || e.cause == EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK) {
-            when (e.entityType) {
-                EntityType.SKELETON, EntityType.WITHER_SKELETON, EntityType.SKELETON_HORSE, EntityType.BLAZE, EntityType.SLIME, EntityType.MAGMA_CUBE -> {
-                }
-                else -> Bukkit.getScheduler().runTaskAsynchronously(Yesod.getPlugin(), Runnable {
-                    Effects.create(Particle.DAMAGE_INDICATOR, e.entity.location.add(0.0, 0.5, 0.0)).speed(0.2).count(5).range(100.0).play()
-                })
-            }
-        }
-    }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun e(e: EntityDamageByEntityEvent) {

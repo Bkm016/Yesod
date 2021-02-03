@@ -1,21 +1,26 @@
 package ink.ptms.yesod.module
 
-import ink.ptms.yesod.Yesod
+import ink.ptms.yesod.Yesod.bypass
+import io.izzel.taboolib.kotlin.Tasks
 import io.izzel.taboolib.module.inject.TListener
 import io.izzel.taboolib.util.lite.Effects
-import io.izzel.taboolib.util.lite.Materials
-import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.entity.*
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.event.block.*
+import org.bukkit.event.block.Action
+import org.bukkit.event.block.BlockExplodeEvent
+import org.bukkit.event.block.LeavesDecayEvent
 import org.bukkit.event.entity.*
 import org.bukkit.event.hanging.HangingBreakByEntityEvent
 import org.bukkit.event.hanging.HangingBreakEvent
-import org.bukkit.event.player.*
+import org.bukkit.event.player.PlayerInteractAtEntityEvent
+import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.event.player.PlayerMoveEvent
+import org.bukkit.event.player.PlayerTeleportEvent
 import org.bukkit.event.raid.RaidTriggerEvent
+import org.bukkit.util.Vector
 
 /**
  * @Author sky
@@ -30,8 +35,20 @@ class ProtectWorld : Listener {
     }
 
     @EventHandler
+    fun e(e: LeavesDecayEvent) {
+        e.isCancelled = true
+    }
+
+    @EventHandler
     fun e(e: EntityChangeBlockEvent) {
         if (e.entity is LivingEntity) {
+            e.isCancelled = true
+        }
+    }
+
+    @EventHandler
+    fun e(e: PlayerInteractEvent) {
+        if (e.action == Action.PHYSICAL && e.clickedBlock!!.type == Material.FARMLAND) {
             e.isCancelled = true
         }
     }
@@ -52,14 +69,14 @@ class ProtectWorld : Listener {
 
     @EventHandler
     fun e(e: HangingBreakByEntityEvent) {
-        if (!Yesod.isAllow1(e.remover)) {
+        if (e.remover?.bypass(true) == false) {
             e.isCancelled = true
         }
     }
 
     @EventHandler
     fun e(e: PlayerInteractAtEntityEvent) {
-        if (!Yesod.isAllow1(e.player) && e.rightClicked is Hanging) {
+        if (!e.player.bypass(true) && e.rightClicked is Hanging) {
             e.isCancelled = true
         }
     }
@@ -108,5 +125,20 @@ class ProtectWorld : Listener {
     @EventHandler
     fun e(e: RaidTriggerEvent) {
         e.isCancelled = true
+    }
+
+    @EventHandler
+    fun e(e: PlayerMoveEvent) {
+        val to = e.to!!
+        if (e.from.x != to.x || e.from.y != to.y || e.from.z != to.z) {
+            if (to.y < 10) {
+                e.isCancelled = true
+                // 返回大厅
+                Tasks.task {
+                    e.player.velocity = Vector(0, 0, 0)
+                    e.player.teleport(e.player.world.spawnLocation)
+                }
+            }
+        }
     }
 }

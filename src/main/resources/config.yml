@@ -5,6 +5,7 @@ block-command-path:
   - com.destroystokyo
   - co.aikar
   - com.onarandombox
+  - fr.neatmonster
   
 block-command-send:
   - cronusquestbook

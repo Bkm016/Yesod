@@ -1,7 +1,10 @@
 package ink.ptms.yesod.module
 
+import ink.ptms.yesod.Yesod
 import ink.ptms.yesod.Yesod.bypass
 import io.izzel.taboolib.kotlin.Tasks
+import io.izzel.taboolib.module.command.lite.CommandBuilder
+import io.izzel.taboolib.module.inject.TInject
 import io.izzel.taboolib.module.inject.TListener
 import io.izzel.taboolib.util.lite.Effects
 import org.bukkit.Material
@@ -28,6 +31,18 @@ import org.bukkit.util.Vector
  */
 @TListener
 class ProtectWorld : Listener {
+
+    @TInject
+    val setSpawnLocation = CommandBuilder.create("setSpawnLocation", Yesod.plugin)
+        .forceRegister()
+        .permission("admin")
+        .execute { sender, _ ->
+            if (sender is Player) {
+                val loc = sender.location.clone()
+                sender.world.spawnLocation = loc
+                sender.sendMessage("世界${sender.world.name}的出生点已被重设在${loc.x},${loc.y},${loc.z}(${loc.yaw},${loc.pitch})")
+            }
+        }
 
     @EventHandler
     fun e(e: EntityBreedEvent) {

@@ -8,7 +8,7 @@ import io.izzel.taboolib.module.inject.TInject;
  */
 public abstract class NMS {
 
-    @TInject(asm = "ink.ptms.yesod.asm.NMSImpl")
+    @TInject(asm = "ink.ptms.yesod.api.NMSImpl")
     public static final NMS HANDLE = null;
 
     abstract public String readParticlePacket(Object j);

@@ -24,6 +24,7 @@ class ProtectCommand : Listener {
         if (!e.player.isOp) {
             e.commands.removeAll(Yesod.conf.getStringList("block-command-name"))
             e.commands.removeAll(Yesod.conf.getStringList("block-command-send"))
+            e.commands.removeIf { it.contains(":") }
         }
     }
 

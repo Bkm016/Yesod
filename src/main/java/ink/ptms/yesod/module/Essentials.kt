@@ -16,7 +16,6 @@ import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.block.SignChangeEvent
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
-import org.bukkit.event.inventory.InventoryType
 import org.bukkit.event.player.PlayerItemConsumeEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
@@ -55,7 +54,7 @@ class Essentials : Listener {
         if (message == null || message.toString().isEmpty()) {
             e.joinMessage = null
         } else {
-            e.joinMessage = TLocale.Translate.setColored(message.toString())
+            e.joinMessage = TLocale.Translate.setColored(message.toString()).replace("@p", e.player.name)
         }
     }
 
@@ -68,7 +67,7 @@ class Essentials : Listener {
         if (message == null || message.toString().isEmpty()) {
             e.quitMessage = null
         } else {
-            e.quitMessage = TLocale.Translate.setColored(message.toString())
+            e.quitMessage = TLocale.Translate.setColored(message.toString()).replace("@p", e.player.name)
         }
     }
 

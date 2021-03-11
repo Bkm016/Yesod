@@ -1,3 +1,21 @@
+# 进入提示
+join-message: ''
+# 退出提示
+quit-message: ''
+# 虚空保护
+void-protect: true
+# 启用物品合成
+allow-craft: true
+# 重做荆棘伤害
+thorn-override: true
+# 禁止命令发送到玩家客户端补全列表
+block-command-send:
+  - cronusquestbook
+  - cronusquestlogs
+  - cronusquestopen
+  - cronusquestquit
+  - cronusquestvisible
+# 禁止命令的路径
 block-command-path:
   - org.spigotmc
   - org.bukkit
@@ -6,14 +24,7 @@ block-command-path:
   - co.aikar
   - com.onarandombox
   - fr.neatmonster
-  
-block-command-send:
-  - cronusquestbook
-  - cronusquestlogs
-  - cronusquestopen
-  - cronusquestquit
-  - cronusquestvisible
-
+# 禁止命令的前缀
 block-command-name:
   - br
   - brush
@@ -41,3 +52,83 @@ block-command-name:
   - w
   - we
   - worldedit
+# 禁用容器类型
+block-inventory:
+  # 信标
+  - BEACON
+  # 铁砧
+  - ANVIL
+  # 酿造台
+  - BREWING
+  # 工作台
+  - WORKBENCH
+  # 附魔台
+  - ENCHANTING
+  # 切石机
+  - STONECUTTER
+  # 砂轮
+  - GRINDSTONE
+  # 织布机
+  - LOOM
+  # 制图台
+  - CARTOGRAPHY
+  # 熔炉
+  - FURNACE
+  # 烟熏炉
+  - BLAST_FURNACE
+  # 烟熏炉
+  - SMOKER
+  # 锻造台
+  - SMITHING
+# 禁止方块交互（后缀 "?" 判断关键字）
+block-interact:
+  # 活板门
+  - TRAPDOOR?
+  - TRAP_DOOR?
+  # 铁砧
+  - ANVIL?
+  # 音符盒
+  - NOTE_BLOCK
+  # 篝火
+  - CAMPFIRE
+  # 灵活篝火
+  - SOUL_CAMPFIRE
+  # 漏斗
+  - HOPPER
+  # 堆肥桶
+  - COMPOSTER
+  # 魔影箱
+  - ENDER_CHEST
+  # 磁石
+  - LODESTONE
+  # 重生锚
+  - RESPAWN_ANCHOR
+  - TNT
+# 阻止游戏特性
+block-features:
+  # 繁殖
+  - BREED
+  # 树叶消散
+  - LEAVES_DECAY
+  # 生物修改方块
+  - ENTITY_CHANGE_BLOCK
+  # 踩坏农田
+  - FARMLAND_PHYSICAL
+  # 展示物破坏
+  - HANGING_BREAK
+  # 实体爆炸
+  - ENTITY_EXPLODE
+  # 方块爆炸
+  - BLOCK_EXPLODE
+  # 入侵
+  - RAID
+# 阻止传送类型
+block-teleport:
+  # 下届传送门
+  - NETHER_PORTAL
+  # 末影珍珠
+  - ENDER_PEARL
+  # 末地折跃门
+  - END_GATEWAY
+  # 末地传送门
+  - END_PORTAL

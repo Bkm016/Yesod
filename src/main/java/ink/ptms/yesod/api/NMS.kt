@@ -1,16 +1,18 @@
-package ink.ptms.yesod.api;
+package ink.ptms.yesod.api
 
-import io.izzel.taboolib.module.inject.TInject;
+import io.izzel.taboolib.module.inject.TInject
 
 /**
- * @Author sky
- * @Since 2019-11-21 23:47
+ * @author sky
+ * @since 2019-11-21 23:47
  */
-public abstract class NMS {
+abstract class NMS {
 
-    @TInject(asm = "ink.ptms.yesod.api.NMSImpl")
-    public static final NMS HANDLE = null;
+    abstract fun readParticlePacket(j: Any): String
 
-    abstract public String readParticlePacket(Object j);
+    companion object {
 
+        @TInject(asm = "ink.ptms.yesod.api.NMSImpl")
+        lateinit var HANDLE: NMS
+    }
 }

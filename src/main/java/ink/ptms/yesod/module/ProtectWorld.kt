@@ -26,8 +26,8 @@ import org.bukkit.event.raid.RaidTriggerEvent
 import org.bukkit.util.Vector
 
 /**
- * @Author sky
- * @Since 2019-11-20 21:21
+ * @author sky
+ * @since 2019-11-20 21:21
  */
 @TListener
 class ProtectWorld : Listener {
@@ -42,111 +42,95 @@ class ProtectWorld : Listener {
                 sender.world.spawnLocation = loc
                 sender.sendMessage("世界${sender.world.name}的出生点已被重设在${loc.x},${loc.y},${loc.z}(${loc.yaw},${loc.pitch})")
             }
-        }
+        }!!
 
     @EventHandler
     fun e(e: EntityBreedEvent) {
-        e.isCancelled = true
+        if ("BREED" in Yesod.blockFeatures) {
+            e.isCancelled = true
+        }
     }
 
     @EventHandler
     fun e(e: LeavesDecayEvent) {
-        e.isCancelled = true
+        if ("LEAVES_DECAY" in Yesod.blockFeatures) {
+            e.isCancelled = true
+        }
     }
 
     @EventHandler
     fun e(e: EntityChangeBlockEvent) {
-        if (e.entity is LivingEntity) {
+        if ("ENTITY_CHANGE_BLOCK" in Yesod.blockFeatures && e.entity is LivingEntity) {
             e.isCancelled = true
         }
     }
 
     @EventHandler
     fun e(e: PlayerInteractEvent) {
-        if (e.action == Action.PHYSICAL && e.clickedBlock!!.type == Material.FARMLAND) {
+        if ("FARMLAND_PHYSICAL" in Yesod.blockFeatures && e.action == Action.PHYSICAL && e.clickedBlock!!.type == Material.FARMLAND) {
             e.isCancelled = true
         }
     }
 
     @EventHandler
     fun e(e: EntityInteractEvent) {
-        if (e.block.type == Material.FARMLAND) {
+        if ("FARMLAND_PHYSICAL" in Yesod.blockFeatures && e.block.type == Material.FARMLAND) {
             e.isCancelled = true
         }
     }
 
     @EventHandler
     fun e(e: HangingBreakEvent) {
-        if (e.cause != HangingBreakEvent.RemoveCause.ENTITY) {
+        if ("HANGING_BREAK" in Yesod.blockFeatures && e.cause != HangingBreakEvent.RemoveCause.ENTITY) {
             e.isCancelled = true
         }
     }
 
     @EventHandler
     fun e(e: HangingBreakByEntityEvent) {
-        if (e.remover?.bypass(true) == false) {
+        if ("HANGING_BREAK" in Yesod.blockFeatures && e.remover?.bypass(true) == false) {
             e.isCancelled = true
         }
     }
 
     @EventHandler
     fun e(e: PlayerInteractAtEntityEvent) {
-        if (!e.player.bypass(true) && e.rightClicked is Hanging) {
+        if ("HANGING_BREAK" in Yesod.blockFeatures && !e.player.bypass(true) && e.rightClicked is Hanging) {
             e.isCancelled = true
         }
     }
 
     @EventHandler
-    fun e(e: ProjectileHitEvent) {
-        if (e.entity is FishHook && (e.hitEntity is ArmorStand || e.hitEntity?.hasMetadata("NPC") == true)) {
-            e.entity.remove()
-            Effects.create(Particle.SMOKE_NORMAL, e.entity.location).speed(0.1).count(8).range(50.0).play()
-        }
-        if (e.entity is Arrow && (e.entity as Arrow).pickupStatus != AbstractArrow.PickupStatus.ALLOWED) {
-            e.entity.remove()
-            Effects.create(Particle.SMOKE_NORMAL, e.entity.location).speed(0.1).count(8).range(50.0).play()
-        }
-    }
-
-    @EventHandler
     fun e(e: PlayerTeleportEvent) {
-        when (e.cause) {
-            PlayerTeleportEvent.TeleportCause.NETHER_PORTAL,
-            PlayerTeleportEvent.TeleportCause.ENDER_PEARL,
-            PlayerTeleportEvent.TeleportCause.END_GATEWAY,
-            PlayerTeleportEvent.TeleportCause.END_PORTAL -> e.isCancelled = true
-            else -> {
-            }
-        }
-    }
-
-    @EventHandler
-    fun e(e: EntityDamageEvent) {
-        if (e.entity !is Player && e.cause == EntityDamageEvent.DamageCause.VOID) {
-            e.entity.remove()
-        }
+        e.isCancelled = e.cause.name in Yesod.blockTeleport
     }
 
     @EventHandler
     fun e(e: EntityExplodeEvent) {
-        e.blockList().clear()
+        if ("ENTITY_EXPLODE" in Yesod.blockFeatures) {
+            e.blockList().clear()
+        }
     }
 
     @EventHandler
     fun e(e: BlockExplodeEvent) {
-        e.blockList().clear()
+        if ("BLOCK_EXPLODE" in Yesod.blockFeatures) {
+            e.blockList().clear()
+        }
     }
 
     @EventHandler
     fun e(e: RaidTriggerEvent) {
-        e.isCancelled = true
+        if ("RAID" in Yesod.blockFeatures) {
+            e.isCancelled = true
+        }
     }
 
     @EventHandler
     fun e(e: PlayerMoveEvent) {
         val to = e.to!!
         if (e.from.x != to.x || e.from.y != to.y || e.from.z != to.z) {
-            if (to.y < 10) {
+            if (to.y < 10 && Yesod.voidProtect) {
                 e.isCancelled = true
                 // 返回大厅
                 Tasks.task {

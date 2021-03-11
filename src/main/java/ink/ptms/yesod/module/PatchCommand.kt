@@ -13,11 +13,11 @@ import org.bukkit.event.player.PlayerCommandSendEvent
 import org.spigotmc.SpigotConfig
 
 /**
- * @Author sky
- * @Since 2019-11-20 21:48
+ * @author sky
+ * @since 2019-11-20 21:48
  */
 @TListener
-class ProtectCommand : Listener {
+class PatchCommand : Listener {
 
     @EventHandler
     fun e(e: PlayerCommandSendEvent) {

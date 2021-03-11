@@ -5,14 +5,14 @@ plugins {
 }
 
 group = 'ink.ptms.yesod'
-version = '1.0.1'
+version = '1.1.0'
 
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
 
 taboolib {
-    tabooLibVersion = '5.53'
-    loaderVersion = '2.10'
+    tabooLibVersion = '5.58'
+    loaderVersion = '2.12'
     classifier = null
     builtin = true
 }

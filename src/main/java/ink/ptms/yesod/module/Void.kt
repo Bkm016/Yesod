@@ -1,4 +1,4 @@
-package ink.ptms.yesod.module.generator
+package ink.ptms.yesod.module
 
 import org.bukkit.Location
 import org.bukkit.Material
@@ -21,15 +21,15 @@ class Void : ChunkGenerator() {
         return (x * 16 + z) * 128 + y
     }
 
-    fun generate(world: World?, rand: Random?, chunkx: Int, chunkz: Int): ByteArray {
+    fun generate(world: World?, rand: Random?, cx: Int, cz: Int): ByteArray {
         val result = ByteArray(32768)
-        if (chunkx == 0 && chunkz == 0) {
+        if (cx == 0 && cz == 0) {
             result[xyzToByte(0, 64, 0)] = Material.BEDROCK.id.toByte()
         }
         return result
     }
 
-    override fun getFixedSpawnLocation(world: World, random: Random): Location? {
+    override fun getFixedSpawnLocation(world: World, random: Random): Location {
         return Location(world, 0.0, 66.0, 0.0)
     }
 

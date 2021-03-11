@@ -1,15 +1,14 @@
-package ink.ptms.yesod.api;
+package ink.ptms.yesod.api
 
-import net.minecraft.server.v1_16_R1.ParticleParam;
+import net.minecraft.server.v1_16_R1.ParticleParam
 
 /**
- * @Author sky
- * @Since 2019-11-21 23:48
+ * @author sky
+ * @since 2019-11-21 23:48
  */
-public class NMSImpl extends NMS {
+class NMSImpl : NMS() {
 
-    @Override
-    public String readParticlePacket(Object j) {
-        return ((ParticleParam) j).a();
+    override fun readParticlePacket(j: Any): String {
+        return (j as ParticleParam).a()
     }
 }

@@ -21,6 +21,9 @@ object Yesod : Plugin() {
     val allowCraft: Boolean
         get() = conf.getBoolean("allow-craft")
 
+    val allowCraftDisplay: Boolean
+        get() = conf.getBoolean("allow-craft-display")
+
     val blockInventory: List<String>
         get() = conf.getStringList("block-inventory")
 

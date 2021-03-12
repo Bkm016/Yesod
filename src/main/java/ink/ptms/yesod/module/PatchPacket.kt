@@ -1,6 +1,7 @@
 package ink.ptms.yesod.module
 
 import com.mojang.brigadier.suggestion.Suggestions
+import ink.ptms.yesod.Yesod
 import ink.ptms.yesod.api.NMS
 import io.izzel.taboolib.internal.xseries.XSound
 import io.izzel.taboolib.kotlin.Reflex
@@ -42,7 +43,7 @@ object PatchPacket {
     @TPacket(type = TPacket.Type.RECEIVE)
     fun receive(player: Player, packet: Packet): Boolean {
         if (packet.`is`("PacketPlayInAutoRecipe") || packet.`is`("PacketPlayInRecipeDisplayed")) {
-            return false
+            return Yesod.allowCraftDisplay
         }
         if (packet.`is`("PacketPlayInUseItem") || packet.`is`("PacketPlayInUseEntity") || packet.`is`("PacketPlayInArmAnimation")) {
             return player.openInventory.topInventory is CraftingInventory

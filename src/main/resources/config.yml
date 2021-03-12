@@ -6,6 +6,8 @@ quit-message: ''
 void-protect: true
 # 启用物品合成
 allow-craft: true
+# 启用配方补全
+allow-craft-display: true
 # 重做荆棘伤害
 thorn-override: true
 # 禁止命令发送到玩家客户端补全列表

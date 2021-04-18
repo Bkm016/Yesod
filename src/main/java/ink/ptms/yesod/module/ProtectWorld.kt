@@ -2,10 +2,12 @@ package ink.ptms.yesod.module
 
 import ink.ptms.yesod.Yesod
 import ink.ptms.yesod.Yesod.bypass
+import io.izzel.taboolib.common.event.PlayerAttackEvent
 import io.izzel.taboolib.kotlin.Tasks
 import io.izzel.taboolib.module.command.lite.CommandBuilder
 import io.izzel.taboolib.module.inject.TInject
 import io.izzel.taboolib.module.inject.TListener
+import io.izzel.taboolib.util.lite.Servers
 import org.bukkit.Material
 import org.bukkit.entity.Hanging
 import org.bukkit.entity.LivingEntity
@@ -15,16 +17,10 @@ import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.block.BlockExplodeEvent
 import org.bukkit.event.block.LeavesDecayEvent
-import org.bukkit.event.entity.EntityBreedEvent
-import org.bukkit.event.entity.EntityChangeBlockEvent
-import org.bukkit.event.entity.EntityExplodeEvent
-import org.bukkit.event.entity.EntityInteractEvent
+import org.bukkit.event.entity.*
 import org.bukkit.event.hanging.HangingBreakByEntityEvent
 import org.bukkit.event.hanging.HangingBreakEvent
-import org.bukkit.event.player.PlayerInteractAtEntityEvent
-import org.bukkit.event.player.PlayerInteractEvent
-import org.bukkit.event.player.PlayerMoveEvent
-import org.bukkit.event.player.PlayerTeleportEvent
+import org.bukkit.event.player.*
 import org.bukkit.event.raid.RaidTriggerEvent
 import org.bukkit.util.Vector
 
@@ -46,6 +42,18 @@ class ProtectWorld : Listener {
                 sender.sendMessage("世界${sender.world.name}的出生点已被重设在${loc.x},${loc.y},${loc.z}(${loc.yaw},${loc.pitch})")
             }
         }!!
+
+    @EventHandler
+    fun e(e: PlayerJoinEvent) {
+        if (!e.player.hasPlayedBefore()) {
+            e.player.teleport(e.player.world.spawnLocation)
+        }
+    }
+
+    @EventHandler
+    fun e(e: PlayerRespawnEvent) {
+        e.respawnLocation = e.respawnLocation.world!!.spawnLocation
+    }
 
     @EventHandler
     fun e(e: EntityBreedEvent) {
@@ -97,8 +105,16 @@ class ProtectWorld : Listener {
     }
 
     @EventHandler
-    fun e(e: PlayerInteractAtEntityEvent) {
+    fun e(e: PlayerInteractEntityEvent) {
         if ("HANGING_BREAK" in Yesod.blockFeatures && !e.player.bypass(true) && e.rightClicked is Hanging) {
+            e.isCancelled = true
+        }
+    }
+
+    @EventHandler
+    fun e(e: EntityDamageByEntityEvent) {
+        val player = Servers.getAttackerInDamageEvent(e) ?: return
+        if ("HANGING_BREAK" in Yesod.blockFeatures && !player.bypass(true) && e.entity is Hanging) {
             e.isCancelled = true
         }
     }

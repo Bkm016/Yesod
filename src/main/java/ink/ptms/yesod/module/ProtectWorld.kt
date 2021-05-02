@@ -14,9 +14,7 @@ import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.event.block.Action
-import org.bukkit.event.block.BlockExplodeEvent
-import org.bukkit.event.block.LeavesDecayEvent
+import org.bukkit.event.block.*
 import org.bukkit.event.entity.*
 import org.bukkit.event.hanging.HangingBreakByEntityEvent
 import org.bukkit.event.hanging.HangingBreakEvent
@@ -141,6 +139,20 @@ class ProtectWorld : Listener {
     @EventHandler
     fun e(e: RaidTriggerEvent) {
         if ("RAID" in Yesod.blockFeatures) {
+            e.isCancelled = true
+        }
+    }
+
+    @EventHandler
+    fun e(e: BlockSpreadEvent) {
+        if ("SPREAD" in Yesod.blockFeatures) {
+            e.isCancelled = true
+        }
+    }
+
+    @EventHandler
+    fun e(e: BlockGrowEvent) {
+        if ("GROW" in Yesod.blockFeatures) {
             e.isCancelled = true
         }
     }

@@ -1,4 +1,4 @@
-package ink.ptms.yesod.module
+package ink.ptms.yesod
 
 import org.bukkit.Location
 import org.bukkit.Material
@@ -7,7 +7,7 @@ import org.bukkit.generator.BlockPopulator
 import org.bukkit.generator.ChunkGenerator
 import java.util.*
 
-class Void : ChunkGenerator() {
+class YesodGenerator : ChunkGenerator() {
 
     override fun getDefaultPopulators(world: World): List<BlockPopulator> {
         return emptyList()

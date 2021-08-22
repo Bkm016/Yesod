@@ -1,25 +1,35 @@
-package ink.ptms.yesod.module
+package ink.ptms.yesod.function
 
 import ink.ptms.yesod.Yesod
-import io.izzel.taboolib.TabooLibAPI
-import io.izzel.taboolib.module.command.TCommandHandler
-import io.izzel.taboolib.module.inject.TListener
-import io.izzel.taboolib.module.inject.TSchedule
 import org.bukkit.command.PluginCommand
-import org.bukkit.event.EventHandler
-import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerCommandPreprocessEvent
 import org.bukkit.event.player.PlayerCommandSendEvent
 import org.spigotmc.SpigotConfig
+import taboolib.common.LifeCycle
+import taboolib.common.io.taboolibId
+import taboolib.common.platform.Awake
+import taboolib.common.platform.PlatformFactory
+import taboolib.common.platform.event.SubscribeEvent
+import taboolib.platform.BukkitCommand
 
 /**
  * @author sky
  * @since 2019-11-20 21:48
  */
-@TListener
-class PatchCommand : Listener {
+object FunctionCommand {
 
-    @EventHandler
+    @Awake(LifeCycle.ACTIVE)
+    fun e() {
+        PlatformFactory.getAPI<BukkitCommand>().commandMap.commands.forEach { command ->
+            if (Yesod.conf.getStringList("block-command-path").any { name -> command.javaClass.name.startsWith(name) }) {
+                if (command !is PluginCommand || !command.javaClass.name.startsWith("io.izzel.$taboolibId")) {
+                    command.permission = "*"
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
     fun e(e: PlayerCommandSendEvent) {
         if (!e.player.isOp) {
             e.commands.removeAll(Yesod.conf.getStringList("block-command-name"))
@@ -28,7 +38,7 @@ class PatchCommand : Listener {
         }
     }
 
-    @EventHandler
+    @SubscribeEvent
     fun e(e: PlayerCommandPreprocessEvent) {
         if (e.player.isOp) {
             return
@@ -37,17 +47,6 @@ class PatchCommand : Listener {
         if (v.contains(":") || v in Yesod.conf.getStringList("block-command-name")) {
             e.isCancelled = true
             e.player.sendMessage(SpigotConfig.unknownCommandMessage)
-        }
-    }
-
-    @TSchedule
-    fun e() {
-        TCommandHandler.getCommandMap().commands.forEach { command ->
-            if (Yesod.conf.getStringList("block-command-path").any { name -> command.javaClass.name.startsWith(name) }) {
-                if (command !is PluginCommand || !TabooLibAPI.isDependTabooLib(command.plugin)) {
-                    command.permission = "*"
-                }
-            }
         }
     }
 }

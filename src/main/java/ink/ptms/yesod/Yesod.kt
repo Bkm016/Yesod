@@ -1,49 +1,58 @@
 package ink.ptms.yesod
 
-import ink.ptms.yesod.module.Void
-import io.izzel.taboolib.loader.Plugin
-import io.izzel.taboolib.module.config.TConfig
-import io.izzel.taboolib.module.inject.TInject
 import org.bukkit.GameMode
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import org.bukkit.generator.ChunkGenerator
+import taboolib.common.platform.Plugin
+import taboolib.module.configuration.Config
+import taboolib.module.configuration.ConfigNode
+import taboolib.module.configuration.SecuredFile
+import taboolib.platform.BukkitWorldGenerator
 
-object Yesod : Plugin() {
+object Yesod : Plugin(), BukkitWorldGenerator {
 
-    @TInject(migrate = true)
-    lateinit var conf: TConfig
+    @Config(migrate = true)
+    lateinit var conf: SecuredFile
         private set
 
-    val voidProtect: Boolean
-        get() = conf.getBoolean("void-protect")
+    @ConfigNode("void-protect")
+    var voidProtect = false
+        private set
 
-    val allowCraft: Boolean
-        get() = conf.getBoolean("allow-craft")
+    @ConfigNode("allow-craft")
+    var allowCraft = false
+        private set
 
-    val allowCraftDisplay: Boolean
-        get() = conf.getBoolean("allow-craft-display")
+    @ConfigNode("allow-craft-display")
+    var allowCraftDisplay = false
+        private set
 
-    val blockInventory: List<String>
-        get() = conf.getStringList("block-inventory")
+    @ConfigNode("block-inventory")
+    lateinit var blockInventory: List<String>
+        private set
 
-    val blockInteract: List<String>
-        get() = conf.getStringList("block-interact")
+    @ConfigNode("block-interact")
+    lateinit var blockInteract: List<String>
+        private set
 
-    val thornOverride: Boolean
-        get() = conf.getBoolean("thorn-override")
+    @ConfigNode("thorn-override")
+    var thornOverride = false
+        private set
 
-    val blockFeatures: List<String>
-        get() = conf.getStringList("block-features")
+    @ConfigNode("block-features")
+    lateinit var blockFeatures: List<String>
+        private set
 
-    val blockTeleport: List<String>
-        get() = conf.getStringList("block-teleport")
+    @ConfigNode("block-teleport")
+    lateinit var blockTeleport: List<String>
+        private set
 
     fun Entity.bypass(hard: Boolean = false): Boolean {
         return this !is Player || isOp && gameMode == GameMode.CREATIVE && (!hard || isSneaking)
     }
 
-    override fun getDefaultWorldGenerator(worldName: String, id: String?): ChunkGenerator {
-        return Void()
+    override fun getDefaultWorldGenerator(worldName: String, name: String?): ChunkGenerator {
+        return YesodGenerator()
     }
 }

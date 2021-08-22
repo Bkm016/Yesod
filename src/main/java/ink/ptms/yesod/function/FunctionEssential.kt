@@ -1,17 +1,11 @@
-package ink.ptms.yesod.module
+package ink.ptms.yesod.function
 
 import ink.ptms.yesod.Yesod
-import io.izzel.taboolib.module.inject.TListener
-import io.izzel.taboolib.module.locale.TLocale
-import io.izzel.taboolib.util.item.Items
 import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.block.Container
 import org.bukkit.entity.Player
-import org.bukkit.event.EventHandler
-import org.bukkit.event.EventPriority
-import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.block.SignChangeEvent
 import org.bukkit.event.inventory.ClickType
@@ -24,59 +18,59 @@ import org.bukkit.inventory.meta.BlockStateMeta
 import org.bukkit.inventory.meta.CrossbowMeta
 import org.bukkit.inventory.meta.PotionMeta
 import org.bukkit.potion.PotionEffectType
+import taboolib.common.platform.event.EventPriority
+import taboolib.common.platform.event.SubscribeEvent
+import taboolib.module.chat.colored
+import taboolib.platform.util.isAir
 
 /**
- * Yesod
- * ink.ptms.yesod.module.Essentials
- *
  * @author sky
  * @since 2021/3/11 10:37 上午
  */
-@TListener
-class Essentials : Listener {
+object FunctionEssential {
 
     /**
      * 牌子颜色
      */
-    @EventHandler
+    @SubscribeEvent
     fun e(e: SignChangeEvent) {
         if (e.player.hasPermission("yesod.color")) {
-            (0..3).forEach { e.setLine(it, TLocale.Translate.setColored(e.getLine(it) ?: "")) }
+            (0..3).forEach { e.setLine(it, e.getLine(it)?.colored() ?: "") }
         }
     }
 
     /**
      * 进入提示
      */
-    @EventHandler
+    @SubscribeEvent
     fun e(e: PlayerJoinEvent) {
         val message = Yesod.conf.get("join-message")
         if (message == null || message.toString().isEmpty()) {
             e.joinMessage = null
         } else {
-            e.joinMessage = TLocale.Translate.setColored(message.toString()).replace("@p", e.player.name)
+            e.joinMessage = message.toString().colored().replace("@p", e.player.name)
         }
     }
 
     /**
      * 离开提示
      */
-    @EventHandler
+    @SubscribeEvent
     fun e(e: PlayerQuitEvent) {
         val message = Yesod.conf.get("quit-message")
         if (message == null || message.toString().isEmpty()) {
             e.quitMessage = null
         } else {
-            e.quitMessage = TLocale.Translate.setColored(message.toString()).replace("@p", e.player.name)
+            e.quitMessage = message.toString().colored().replace("@p", e.player.name)
         }
     }
 
     /**
      * 非创造模式使用鼠标中键点击弩卸载已装备的箭
      */
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @SubscribeEvent(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun e(e: InventoryClickEvent) {
-        if (e.click == ClickType.MIDDLE && e.currentItem?.type == Material.CROSSBOW && e.whoClicked.gameMode != GameMode.CREATIVE && Items.isNull(e.cursor)) {
+        if (e.click == ClickType.MIDDLE && e.currentItem?.type == Material.CROSSBOW && e.whoClicked.gameMode != GameMode.CREATIVE && e.cursor.isAir()) {
             val meta = e.currentItem!!.itemMeta as? CrossbowMeta
             if (meta?.chargedProjectiles == null) {
                 return
@@ -98,7 +92,7 @@ class Essentials : Listener {
     /**
      * 允许玩家生存模式放下带有 NBT 结构的容器
      */
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @SubscribeEvent(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onPlace(e: BlockPlaceEvent) {
         if (e.blockPlaced.state is Container && isContainer(e.itemInHand)) {
             try {
@@ -114,7 +108,7 @@ class Essentials : Listener {
     /**
      * 允许玩家喝下带有饱和效果的药水
      */
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @SubscribeEvent(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onConsume(e: PlayerItemConsumeEvent) {
         if (e.item.itemMeta is PotionMeta) {
             (e.item.itemMeta as PotionMeta).customEffects.forEach {

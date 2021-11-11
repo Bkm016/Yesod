@@ -10,6 +10,7 @@ taboolib {
         contributors {
             name("坏黑")
         }
+        load("STARTUP")
     }
     install("common")
     install("common-5")

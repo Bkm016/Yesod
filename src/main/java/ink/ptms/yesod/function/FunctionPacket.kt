@@ -5,6 +5,7 @@ import ink.ptms.yesod.Yesod
 import org.bukkit.Bukkit
 import org.bukkit.entity.Entity
 import org.bukkit.event.player.PlayerFishEvent
+import org.bukkit.event.player.PlayerKickEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.inventory.CraftingInventory
 import taboolib.common.platform.event.SubscribeEvent
@@ -26,6 +27,11 @@ object FunctionPacket {
 
     @SubscribeEvent
     fun e(e: PlayerQuitEvent) {
+        bite.remove(e.player.name)
+    }
+
+    @SubscribeEvent
+    fun e(e: PlayerKickEvent) {
         bite.remove(e.player.name)
     }
 

@@ -19,7 +19,7 @@ taboolib {
     install("module-nms")
     install("platform-bukkit")
     classifier = null
-    version = "6.0.7-52"
+    version = "6.0.9-31"
 }
 
 repositories {
@@ -30,6 +30,10 @@ repositories {
 dependencies {
     compileOnly("ink.ptms.core:v11701:11701-minimize:universal")
     compileOnly("ink.ptms.core:v11600:11600-minimize")
+    compileOnly("ink.ptms.core:v11800:11800-minimize:api")
+    compileOnly("ink.ptms.core:v11802:11802:mapped")
+    compileOnly("ink.ptms.core:v11802:11802:universal")
+    compileOnly("ink.ptms:nms-all:1.0.0")
     compileOnly(kotlin("stdlib"))
     compileOnly(fileTree("libs"))
 }
@@ -61,5 +65,11 @@ publishing {
             from(components["java"])
             groupId = "ink.ptms"
         }
+    }
+}
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+        jvmTarget = "1.8"
+        freeCompilerArgs = listOf("-Xjvm-default=all")
     }
 }

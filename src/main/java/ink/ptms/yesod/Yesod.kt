@@ -8,9 +8,12 @@ import taboolib.common.platform.Plugin
 import taboolib.module.configuration.Config
 import taboolib.module.configuration.ConfigNode
 import taboolib.module.configuration.SecuredFile
+import taboolib.module.configuration.createLocal
 import taboolib.platform.BukkitWorldGenerator
 
 object Yesod : Plugin(), BukkitWorldGenerator {
+
+    val data by lazy { createLocal("data.yml") }
 
     @Config(migrate = true)
     lateinit var conf: SecuredFile

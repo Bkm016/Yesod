@@ -16,34 +16,41 @@ import org.bukkit.util.Vector
 import taboolib.common.platform.command.command
 import taboolib.common.platform.event.SubscribeEvent
 import taboolib.common.platform.function.submit
+import taboolib.module.configuration.util.getLocation
+import taboolib.module.configuration.util.setLocation
 import taboolib.platform.util.attacker
+import taboolib.platform.util.toBukkitLocation
+import taboolib.platform.util.toProxyLocation
 
 /**
  * @author sky
  * @since 2019-11-20 21:21
  */
+@Suppress("SpellCheckingInspection")
 object FunctionWorld {
 
     init {
-        command("setSpawnLocation", permission = "admin") {
+        command("setserverspawn", permission = "admin") {
             execute<Player> { sender, _, _ ->
                 val loc = sender.location.clone()
-                sender.world.spawnLocation = loc
-                sender.sendMessage("世界${sender.world.name}的出生点已被重设在${loc.x},${loc.y},${loc.z}(${loc.yaw},${loc.pitch})")
+                Yesod.data.setLocation("spawn", loc.toProxyLocation())
+                sender.sendMessage("服务器出生点已被重设在${loc.x},${loc.y},${loc.z}(${loc.yaw},${loc.pitch})")
             }
         }
     }
 
     @SubscribeEvent
     fun e(e: PlayerJoinEvent) {
-        if (!e.player.hasPlayedBefore()) {
-            e.player.teleport(e.player.world.spawnLocation)
+        if (Yesod.data.contains("spawn")) {
+            e.player.teleport(Yesod.data.getLocation("spawn")!!.toBukkitLocation())
         }
     }
 
     @SubscribeEvent
     fun e(e: PlayerRespawnEvent) {
-        e.respawnLocation = e.respawnLocation.world!!.spawnLocation
+        if (Yesod.data.contains("spawn")) {
+            e.respawnLocation = Yesod.data.getLocation("spawn")!!.toBukkitLocation()
+        }
     }
 
     @SubscribeEvent

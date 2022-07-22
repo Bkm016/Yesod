@@ -42,7 +42,9 @@ object FunctionWorld {
     @SubscribeEvent
     fun e(e: PlayerJoinEvent) {
         if (Yesod.data.contains("spawn")) {
-            e.player.teleport(Yesod.data.getLocation("spawn")!!.toBukkitLocation())
+            submit(delay = 20) {
+                e.player.teleport(Yesod.data.getLocation("spawn")!!.toBukkitLocation())
+            }
         }
     }
 

@@ -16,7 +16,8 @@ import org.bukkit.util.Vector
 import taboolib.common.platform.command.command
 import taboolib.common.platform.event.SubscribeEvent
 import taboolib.common.platform.function.submit
-import taboolib.module.configuration.util.getLocation
+import taboolib.common.util.Location
+import taboolib.library.configuration.ConfigurationSection
 import taboolib.module.configuration.util.setLocation
 import taboolib.platform.util.attacker
 import taboolib.platform.util.toBukkitLocation
@@ -172,5 +173,18 @@ object FunctionWorld {
                 }
             }
         }
+    }
+
+    fun ConfigurationSection.getLocation(path: String): Location? {
+        getConfigurationSection(path)?.let { section ->
+            return Location(
+                section.getString("world"),
+                section.getDouble("x"),
+                section.getDouble("y"),
+                section.getDouble("z"),
+                section.getDouble("yaw").toFloat(),
+                section.getDouble("pitch").toFloat()
+            )
+        } ?: return null
     }
 }

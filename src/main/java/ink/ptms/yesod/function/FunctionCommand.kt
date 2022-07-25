@@ -20,10 +20,12 @@ object FunctionCommand {
 
     @Awake(LifeCycle.ACTIVE)
     fun e() {
-        PlatformFactory.getAPI<BukkitCommand>().commandMap.commands.forEach { command ->
-            if (Yesod.conf.getStringList("block-command-path").any { name -> command.javaClass.name.startsWith(name) }) {
-                if (command !is PluginCommand || !command.javaClass.name.startsWith("io.izzel.$taboolibId")) {
-                    command.permission = "*"
+        if (Yesod.conf.getBoolean("command-block")) {
+            PlatformFactory.getAPI<BukkitCommand>().commandMap.commands.forEach { command ->
+                if (Yesod.conf.getStringList("block-command-path").any { name -> command.javaClass.name.startsWith(name) }) {
+                    if (command !is PluginCommand || !command.javaClass.name.startsWith("io.izzel.$taboolibId")) {
+                        command.permission = "*"
+                    }
                 }
             }
         }
@@ -31,16 +33,16 @@ object FunctionCommand {
 
     @SubscribeEvent
     fun e(e: PlayerCommandSendEvent) {
-        if (!e.player.isOp) {
-            e.commands.removeAll(Yesod.conf.getStringList("block-command-name"))
-            e.commands.removeAll(Yesod.conf.getStringList("block-command-send"))
+        if (!e.player.isOp && Yesod.conf.getBoolean("command-block")) {
+            e.commands.removeAll(Yesod.conf.getStringList("block-command-name").toSet())
+            e.commands.removeAll(Yesod.conf.getStringList("block-command-send").toSet())
             e.commands.removeIf { it.contains(":") }
         }
     }
 
     @SubscribeEvent
     fun e(e: PlayerCommandPreprocessEvent) {
-        if (e.player.isOp) {
+        if (e.player.isOp || !Yesod.conf.getBoolean("command-block")) {
             return
         }
         val v = e.message.split(" ")[0].toLowerCase().substring(1)

@@ -10,6 +10,8 @@ allow-craft: true
 allow-craft-display: true
 # 重做荆棘伤害
 thorn-override: true
+# 命令系统拦截
+command-block: false
 # 禁止命令发送到玩家客户端补全列表
 block-command-send:
   - cronusquestbook
